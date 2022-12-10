@@ -3,3 +3,4 @@
 /.sublime**
 /NewBotProject.sublime-project
 /NewBotProject.sublime-workspace
+/package-lock.json
