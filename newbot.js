@@ -22,6 +22,7 @@ if(variables === null) {
 
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
+let welcome = loader('./custom_modules/welcome.js');
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -31,20 +32,20 @@ var channel = 'lyykapaws';
 //Define configuration options
 const opts = { //Set bot name and auth
 	identity: {
-		username: variables.botName,
-		password: variables.botKey
+		username: variables.bot.name,
+		password: variables.bot.key
 	},
 	channels: [
-		variables.channelName
+		variables.broadcaster.name
 	]
 };
 const opts2 = { //Set secondary bot name and auth using the broadcaster's identification for the ability to create VIPs (completely optional)
 	identity: {
-		username: variables.channelName,
-		password: variables.channelKey
+		username: variables.broadcaster.name,
+		password: variables.broadcaster.key
 	},
 	channels: [
-		variables.channelName
+		variables.broadcaster.name
 	]
 };
 
@@ -90,15 +91,18 @@ function onMessageHandler(target, context, msg, self) {
 	if(commandName.startsWith("!")){
 		if(commandName.startsWith('!thanks')){
 			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.channelName);
+			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name);
 		}
 		else if(commandName.startsWith('!nothanks')){
 			var commandtarget = msg.split(' ')[1];
-			thanks.nothanks(commandtarget, context, broadcaster, client, variables.channelName);
+			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name);
 		}
-		else if(commandName.startsWith('!caster') || commandName.startsWith('!shoutout')){
+		else if(commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so')){
 			var commandtarget = msg.split(' ')[1];
-			caster.shoutout(commandtarget, context, broadcaster, client, variables.channelName);
+			caster.shoutout(commandtarget, context, broadcaster, client, variables.broadcaster.name);
+		}
+		else if(commandName.startsWith('!raid')) {
+			welcome.welcome(context, broadcaster, client, variables.broadcaster.name)
 		}
 		else {return;}
 	}

@@ -9,11 +9,10 @@ tmi.js
 
 Filename: variables.js
 ```js
-modules.export = {
-	botName:[your bots username goes here]
-	botToken:oauth:[your bots auth token goes here]
-	channelName:[your channel name goes here (needed for custom modules to work, without this they're useless]
-	channelKey:[your channel auth token goes here, only required for the thanks module to work. If you don't want this, this line can be safely ignored.]
-};
+const bot = { name: '[bot username goes here without brackets]', key:'[bot oauth key goes here without brackets]'};
+const broadcaster = { name:'[broadcaster name goes here without brackets, required for modules to work]', key:'[broadcaster oauth key goes here, optional if you dont want to use the thanks command]'};
+
+module.exports.bot = bot;
+module.exports.broadcaster = broadcaster;
 ```
 Obviously this file will contain your auth key(s) so do well to keep it hidden from view.
