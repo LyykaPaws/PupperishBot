@@ -6,6 +6,7 @@ console.log("Loaded TMI");
 function loader(file){
 	try {
 		return require(file);
+		console.log(`${file} loaded.`);
 	} catch (e){
 		console.log(e);
 		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
@@ -13,12 +14,23 @@ function loader(file){
 	}
 }
 
+
+
 // Attempt to load variables. If they can't load, exit process.
-let variables = loader('./variables.js')
+let variables = loader('./variables.js');
 if(variables === null) {
 	console.log("Variables.js couldn't load. This file is a requirement for the bot to run. Please check the github for info on how to \nset it up and where to put it. Terminating program.");
 	process.exit();
 };
+//Attempt to load about module. If they can't load, exit process.
+let about = loader('./required_modules/about.js');
+if(about === null){
+	console.log("About.js couldn't load. This file is a requirement for bot to run because the creator wants to be credited. Please check that the file is in the required_modules folder and try again. \nTerminating Process.")
+	process.exit();
+};
+
+
+
 
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
@@ -103,6 +115,9 @@ function onMessageHandler(target, context, msg, self) {
 		}
 		else if(commandName.startsWith('!raid')) {
 			welcome.welcome(context, broadcaster, client, variables.broadcaster.name)
+		}
+		else if(commandName.startsWith('!about')) {
+			about.about(client, variables.broadcaster.name);
 		}
 		else {return;}
 	}
