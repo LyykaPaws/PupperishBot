@@ -6,9 +6,9 @@ console.log("Loaded TMI");
 function loader(file){
 	try {
 		return require(file);
-		console.log(`${file} loaded.`);
+		console.log(file + " loaded.");
 	} catch (e){
-		console.log(e);
+		//console.log(e);
 		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
@@ -43,6 +43,9 @@ console.log("Console Input Running");
 var channel = 'lyykapaws';
 //Define configuration options
 const opts = { //Set bot name and auth
+	connection:{
+		reconnect: true
+	},
 	identity: {
 		username: variables.bot.name,
 		password: variables.bot.key
@@ -52,6 +55,9 @@ const opts = { //Set bot name and auth
 	]
 };
 const opts2 = { //Set secondary bot name and auth using the broadcaster's identification for the ability to create VIPs (completely optional)
+	connection:{
+		reconnect: true
+	},
 	identity: {
 		username: variables.broadcaster.name,
 		password: variables.broadcaster.key
@@ -91,6 +97,8 @@ process.stdin.on('data', function(text) {
 	}
 	if (text.trim() === 'quit') { // Listens for phrase "quit" in console, if issued, ends program.
 		console.log("Command Issued: Quit. Ending program.");
+		client.disconnect();
+		broadcaster.disconnect();
 		process.exit();
 	} else (console.log("Console command not found"));
 });
@@ -103,25 +111,25 @@ function onMessageHandler(target, context, msg, self) {
 	if(commandName.startsWith("!")){
 		if(commandName.startsWith('!thanks')){
 			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name);
+			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
 		}
 		else if(commandName.startsWith('!nothanks')){
 			var commandtarget = msg.split(' ')[1];
-			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name);
+			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
 		}
 		else if(commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so')){
 			var commandtarget = msg.split(' ')[1];
-			caster.shoutout(commandtarget, context, broadcaster, client, variables.broadcaster.name);
+			caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
 		}
 		else if(commandName.startsWith('!raid')) {
-			welcome.welcome(context, broadcaster, client, variables.broadcaster.name)
+			welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
 		}
 		else if(commandName.startsWith('!about')) {
-			about.about(client, variables.broadcaster.name);
+			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 		}
 		else {return;}
 	}
 
-	else {return}
+	else {return;}
 }
 
