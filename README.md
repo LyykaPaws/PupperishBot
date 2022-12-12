@@ -16,3 +16,5 @@ module.exports.bot = bot;
 module.exports.broadcaster = broadcaster;
 ```
 Obviously this file will contain your auth key(s) so do well to keep it hidden from view.
+
+Required files for the bot to run are all in the required_modules folder. The bot will not run without those files.
