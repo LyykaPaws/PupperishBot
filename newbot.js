@@ -45,7 +45,8 @@ process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
 console.log("Console Input Running");
 
-var channel = 'lyykapaws';
+var channel = variables.broadcaster.name;
+
 //Define configuration options
 const opts = { //Set bot name and auth
 	identity: {
@@ -79,6 +80,18 @@ client.on('subscription', (channel, username, message, userstate, methods) => {
 });
 client.on('resub', (channel, username, months, message, userstate, methods) => {
 	subscriptions.resub(client, username, months, channel);
+});
+client.on('subgift', (channel, username, streakMonths, recipient, methods, userstate) => {
+	subscriptions.giftsub(client, username, recipient, channel);
+});
+client.on('submysterygift', (channel, username, numbOfSubs, methods, userstate) => {
+	subscriptions.mysteryGift(client, username, numbOfSubs, channel);
+});
+client.on('anongiftpaidupgrade', (channel, username, userstate) => {
+	subscriptions.anonContinue(channel, username, channel);
+})
+client.on('giftpaidupgrade', (channel, username, sender, userstate) => {
+	subscriptions.continue(channel, username, sender, channel);
 })
 
 //Run function to log connections
@@ -132,7 +145,5 @@ function onMessageHandler(target, context, msg, self) {
 		}
 		else {return;}
 	}
-
-	else {return}
+	else {return;}
 }
-
