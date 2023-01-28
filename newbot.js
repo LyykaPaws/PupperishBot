@@ -3,13 +3,13 @@ const tmi = require('tmi.js');
 console.log("Loaded TMI");
 
 //Create file loader, right now just for modules
+
 function loader(file){
 	try {
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		//console.log(e);
-		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -19,19 +19,21 @@ function loader(file){
 // Attempt to load variables. If they can't load, exit process.
 let variables = loader('./variables.js');
 if(variables === null) {
-	console.log("Variables.js couldn't load. This file is a requirement for the bot to run. Please check the github for info on how to \nset it up and where to put it. Terminating program.");
 	process.exit();
 };
 //Attempt to load about module. If they can't load, exit process.
 let about = loader('./required_modules/about.js');
 if(about === null){
-	console.log("About.js couldn't load. This file is a requirement for bot to run because the creator wants to be credited. Please check that the file is in the required_modules folder and try again. \nTerminating Process.")
 	process.exit();
 }
 //Attempt to load subscriptions module. If it cannot load, exit process.
 let subscriptions = loader('./required_modules/subscriptions.js');
 if(subscriptions === null){
-	console.log("Subscriptions.js couldn't load. This file is required for the bot to run and handle subscriptions. Please check that the file is in the required_modules folder and try again.\nTerminating Process.")
+	process.exit();
+};
+//Attempt to load tools module. If it cannot load, exit process.
+let tools = loader('./required_modules/tools.js');
+if(tools === null){
 	process.exit();
 };
 
@@ -40,6 +42,7 @@ if(subscriptions === null){
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
+let affection = loader('./custom_modules/affection.js');
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -132,26 +135,40 @@ function onMessageHandler(target, context, msg, self) {
 		return;
 	}
 	var commandName = msg.trim();
-	if(commandName.startsWith("!")){
-		if(commandName.startsWith('!thanks')){
+	
+	switch(commandName.startsWith('!')){
+		case commandName.startsWith('!thanks'):
 			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-		}
-		else if(commandName.startsWith('!nothanks')){
+			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
+			break;
+		case commandName.startsWith('!nothanks'):
 			var commandtarget = msg.split(' ')[1];
 			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-		}
-		else if(commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so')){
+			break;
+		case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
 			var commandtarget = msg.split(' ')[1];
 			caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
-		}
-		else if(commandName.startsWith('!raid')) {
+			break;
+		case commandName.startsWith('!raid'):
 			welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
-		}
-		else if(commandName.startsWith('!about')) {
+			break;
+		case commandName.startsWith('!about'):
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
-		}
-		else {return;}
+			break;
+		case commandName.startsWith('!hug'):
+			var commandtarget = msg.split(' ')[1];
+			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
+			break;
+		case commandName.startsWith('!ping'):
+			tools.ping(context, client, channel, process, variables);
+			break;
+		case commandName.startsWith('!telegram'):
+			tools.telegram(context, client, channel, variables);
+			break;
+		case commandName.startsWith('!discord'):
+			tools.discord(context, client, channel, variables);
+			break;
+		default:
+			return;
 	}
-	else {return;}
 }

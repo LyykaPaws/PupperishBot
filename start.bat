@@ -1,2 +1,2 @@
-node newbot.js
+node newbot.js -d true
 PAUSE
