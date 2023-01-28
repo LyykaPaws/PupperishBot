@@ -8,8 +8,8 @@ function loader(file){
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		//console.log(e);
-		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(e);
+		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -35,11 +35,17 @@ if(subscriptions === null){
 	process.exit();
 };
 
+let tools = loader('./required_modules/tools.js');
+if(tools === null){
+	process.exit();
+};
+
 
 
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
+let affection = loader('./custom_modules/affection.js');
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -151,8 +157,17 @@ function onMessageHandler(target, context, msg, self) {
 		else if(commandName.startsWith('!about')) {
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 		}
-		else if(commandName.startsWith('!about')) {
-			about.about(client, variables.broadcaster.name);
+		else if(commandName.startsWith('!hug')) {
+			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
+		}
+		else if(commandName.startsWith('!ping')) {
+			tools.ping(context, client, channel, process, variables);
+		}
+		else if(commandName.startsWith('!telegram')){
+			tools.telegram(context, client, channel, variables);
+		}
+		else if(commandName.startsWith('!discord')){
+			tools.discord(context, client, channel, variables);
 		}
 		else {return;}
 	}
