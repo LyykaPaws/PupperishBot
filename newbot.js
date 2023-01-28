@@ -151,9 +151,6 @@ function onMessageHandler(target, context, msg, self) {
 		else if(commandName.startsWith('!about')) {
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 		}
-		else if(commandName.startsWith('!about')) {
-			about.about(client, variables.broadcaster.name);
-		}
 		else {return;}
 	}
 	else {return;}
