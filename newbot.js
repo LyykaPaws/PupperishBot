@@ -138,39 +138,40 @@ function onMessageHandler(target, context, msg, self) {
 		return;
 	}
 	var commandName = msg.trim();
-	if(commandName.startsWith("!")){
-		if(commandName.startsWith('!thanks')){
+	
+	switch(commandName.startsWith("!")){
+		case commandName.startsWith("!thanks"):
 			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-		}
-		else if(commandName.startsWith('!nothanks')){
+			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
+			break;
+		case commandName.startsWith('!nothanks'):
 			var commandtarget = msg.split(' ')[1];
 			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-		}
-		else if(commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so')){
+			break;
+		case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
 			var commandtarget = msg.split(' ')[1];
 			caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
-		}
-		else if(commandName.startsWith('!raid')) {
+			break;
+		case commandName.startsWith('!raid'):
 			welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
-		}
-		else if(commandName.startsWith('!about')) {
+			break;
+		case commandName.startsWith('!about'):
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
-		}
-		else if(commandName.startsWith('!hug')) {
+			break;
+		case commandName.startsWith('!hug'):
 			var commandtarget = msg.split(' ')[1];
 			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
-		}
-		else if(commandName.startsWith('!ping')) {
+			break;
+		case commandName.startsWith('!ping'):
 			tools.ping(context, client, channel, process, variables);
-		}
-		else if(commandName.startsWith('!telegram')){
+			break;
+		case commandName.startsWith('!telegram'):
 			tools.telegram(context, client, channel, variables);
-		}
-		else if(commandName.startsWith('!discord')){
+			break;
+		case commandName.startsWith('!discord'):
 			tools.discord(context, client, channel, variables);
-		}
-		else {return;}
+			break;
+		default:
+			return;
 	}
-	else {return;}
 }
