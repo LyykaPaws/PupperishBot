@@ -8,8 +8,8 @@ function loader(file){
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		//console.log(e);
-		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(e);
+		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -32,6 +32,11 @@ if(about === null){
 let subscriptions = loader('./required_modules/subscriptions.js');
 if(subscriptions === null){
 	console.log("Subscriptions.js couldn't load. This file is required for the bot to run and handle subscriptions. Please check that the file is in the required_modules folder and try again.\nTerminating Process.")
+	process.exit();
+};
+
+let tools = loader('./required_modules/tools.js');
+if(tools === null){
 	process.exit();
 };
 
@@ -156,7 +161,13 @@ function onMessageHandler(target, context, msg, self) {
 			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
 		}
 		else if(commandName.startsWith('!ping')) {
-			client.say(channel, "Pong!");
+			tools.ping(context, client, channel, process, variables);
+		}
+		else if(commandName.startsWith('!telegram')){
+			tools.telegram(context, client, channel, variables);
+		}
+		else if(commandName.startsWith('!discord')){
+			tools.discord(context, client, channel, variables);
 		}
 		else {return;}
 	}
