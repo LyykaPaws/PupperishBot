@@ -3,13 +3,13 @@ const tmi = require('tmi.js');
 console.log("Loaded TMI");
 
 //Create file loader, right now just for modules
+
 function loader(file){
 	try {
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		console.log(e);
-		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nModules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -19,22 +19,19 @@ function loader(file){
 // Attempt to load variables. If they can't load, exit process.
 let variables = loader('./variables.js');
 if(variables === null) {
-	console.log("Variables.js couldn't load. This file is a requirement for the bot to run. Please check the github for info on how to \nset it up and where to put it. Terminating program.");
 	process.exit();
 };
 //Attempt to load about module. If they can't load, exit process.
 let about = loader('./required_modules/about.js');
 if(about === null){
-	console.log("About.js couldn't load. This file is a requirement for bot to run because the creator wants to be credited. Please check that the file is in the required_modules folder and try again. \nTerminating Process.")
 	process.exit();
 }
 //Attempt to load subscriptions module. If it cannot load, exit process.
 let subscriptions = loader('./required_modules/subscriptions.js');
 if(subscriptions === null){
-	console.log("Subscriptions.js couldn't load. This file is required for the bot to run and handle subscriptions. Please check that the file is in the required_modules folder and try again.\nTerminating Process.")
 	process.exit();
 };
-
+//Attempt to load tools module. If it cannot load, exit process.
 let tools = loader('./required_modules/tools.js');
 if(tools === null){
 	process.exit();
