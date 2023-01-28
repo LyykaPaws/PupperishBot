@@ -139,8 +139,8 @@ function onMessageHandler(target, context, msg, self) {
 	}
 	var commandName = msg.trim();
 	
-	switch(commandName.startsWith("!")){
-		case commandName.startsWith("!thanks"):
+	switch(commandName.startsWith('!')){
+		case commandName.startsWith('!thanks'):
 			var commandtarget = msg.split(' ')[1];
 			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
 			break;

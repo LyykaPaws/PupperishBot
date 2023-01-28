@@ -2,7 +2,7 @@ module.exports = {
 	ping: function(context, client, channel, process, variables){
 		if (context['user-type'] === 'mod' || context.username === channel) {
 			console.log(`${context.username} used !ping.\nProcess uptime: ${process.uptime()}\nCurrent Channel: ${channel}`);
-			client.say(channel, `Pong! Client uptime is ${process.uptime()}. Current channel is ${channel}.`);
+			client.say(channel, `Pong! Client uptime is ${Math.round(process.uptime())} seconds. Current channel is ${channel}.`);
 		}
 	},
 	telegram: function(context, client, channel, variables){
