@@ -158,6 +158,7 @@ function onMessageHandler(target, context, msg, self) {
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 		}
 		else if(commandName.startsWith('!hug')) {
+			var commandtarget = msg.split(' ')[1];
 			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
 		}
 		else if(commandName.startsWith('!ping')) {
