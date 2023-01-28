@@ -40,6 +40,7 @@ if(subscriptions === null){
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
+let affection = loader('./custom_modules/affection.js');
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -151,8 +152,11 @@ function onMessageHandler(target, context, msg, self) {
 		else if(commandName.startsWith('!about')) {
 			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 		}
-		else if(commandName.startsWith('!about')) {
-			about.about(client, variables.broadcaster.name);
+		else if(commandName.startsWith('!hug')) {
+			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
+		}
+		else if(commandName.startsWith('!ping')) {
+			client.say(channel, "Pong!");
 		}
 		else {return;}
 	}
