@@ -118,16 +118,20 @@ broadcaster.connect().catch(console.error);
 
 process.stdin.on('data', function(text) {
 	//console.log(text);
-	if (text.trim() === 'commands'){ // Listens for phrase "commands" in console, if issued, list all console commands in console.
-		console.log("Current console commands are: \n quit");
-		return;
+	switch(text.trim()){
+		case 'commands':
+			console.log("List of commands: \nquit");
+			break;
+		case 'quit':
+			console.log("Command Issued: Quit; Ending process.");
+			client.disconnect();
+			broadcaster.disconnect();
+			process.exit();
+			break;
+		default:
+			console.log("Command not found.");
+			break;
 	}
-	if (text.trim() === 'quit') { // Listens for phrase "quit" in console, if issued, ends program.
-		console.log("Command Issued: Quit. Ending program.");
-		client.disconnect();
-		broadcaster.disconnect();
-		process.exit();
-	} else (console.log("Console command not found"));
 });
 
 function onMessageHandler(target, context, msg, self) {
