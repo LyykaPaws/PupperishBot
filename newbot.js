@@ -123,10 +123,17 @@ process.stdin.on('data', function(text) {
 			console.log("List of commands: \nquit");
 			break;
 		case 'quit':
-			console.log("Command Issued: Quit; Ending process.");
+			console.log("Ending process.");
 			client.disconnect();
 			broadcaster.disconnect();
 			process.exit();
+			break;
+		case 'uptime':
+			console.log(`Client Uptime: ${process.uptime()}`);
+			break;
+		case 'info':
+			console.log(`Client info:\nusername: ${variables.bot.name}, channel: ${channel}`);
+			console.log(`Broadcaster info:\nusername: ${variables.broadcaster.name}, channel: ${channel}`);
 			break;
 		default:
 			console.log("Command not found.");
