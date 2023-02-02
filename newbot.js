@@ -9,7 +9,8 @@ function loader(file){
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(e);
+		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -43,6 +44,9 @@ let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
 let affection = loader('./custom_modules/affection.js');
+console.log(`Affection status:\n${affection}`);
+var test = null;
+console.log(`test is ${test}`);
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -147,39 +151,50 @@ function onMessageHandler(target, context, msg, self) {
 	}
 	var commandName = msg.trim();
 	
-	switch(commandName.startsWith('!')){
-		case commandName.startsWith('!thanks'):
-			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
-			break;
-		case commandName.startsWith('!nothanks'):
-			var commandtarget = msg.split(' ')[1];
-			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-			break;
-		case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
-			var commandtarget = msg.split(' ')[1];
-			caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
-			break;
-		case commandName.startsWith('!raid'):
-			welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
-			break;
-		case commandName.startsWith('!about'):
-			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
-			break;
-		case commandName.startsWith('!hug'):
-			var commandtarget = msg.split(' ')[1];
-			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
-			break;
-		case commandName.startsWith('!ping'):
-			tools.ping(context, client, channel, process, variables);
-			break;
-		case commandName.startsWith('!telegram'):
-			tools.telegram(context, client, channel, variables);
-			break;
-		case commandName.startsWith('!discord'):
-			tools.discord(context, client, channel, variables);
-			break;
-		default:
-			return;
+	if(commandName.startsWith('!')){
+
+		switch(commandName.startsWith('!')){
+			case commandName.startsWith('!thanks'):
+				var commandtarget = msg.split(' ')[1];
+				thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
+				break;
+			case commandName.startsWith('!nothanks'):
+				var commandtarget = msg.split(' ')[1];
+				thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
+				break;
+			case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
+				var commandtarget = msg.split(' ')[1];
+				caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
+				break;
+			case commandName.startsWith('!raid'):
+				welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
+				break;
+			case commandName.startsWith('!about'):
+				about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
+				break;
+			case commandName.startsWith('!hug'):
+				var commandtarget = msg.split(' ')[1];
+				affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
+				break;
+			case commandName.startsWith('!ping'):
+				tools.ping(context, client, channel, process, variables);
+				break;
+			case commandName.startsWith('!telegram'):
+				tools.telegram(context, client, channel, variables);
+				break;
+			case commandName.startsWith('!discord'):
+				tools.discord(context, client, channel, variables);
+				break;
+			default:
+				return;
+		}
+	} else {
+		return;
 	}
 }
+
+/* BUGFIX LIST:
+
+
+
+*/
