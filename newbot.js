@@ -9,7 +9,8 @@ function loader(file){
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
+		console.log(e);
+		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
 	}
 }
@@ -43,6 +44,9 @@ let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
 let affection = loader('./custom_modules/affection.js');
+console.log(`Affection status:\n${affection}`);
+var test = null;
+console.log(`test is ${test}`);
 
 process.stdin.resume(); //Set up console input
 process.stdin.setEncoding('utf8');
@@ -118,16 +122,27 @@ broadcaster.connect().catch(console.error);
 
 process.stdin.on('data', function(text) {
 	//console.log(text);
-	if (text.trim() === 'commands'){ // Listens for phrase "commands" in console, if issued, list all console commands in console.
-		console.log("Current console commands are: \n quit");
-		return;
+	switch(text.trim()){
+		case 'commands':
+			console.log("List of commands: \nquit");
+			break;
+		case 'quit':
+			console.log("Ending process.");
+			client.disconnect();
+			broadcaster.disconnect();
+			process.exit();
+			break;
+		case 'uptime':
+			console.log(`Client Uptime: ${process.uptime()}`);
+			break;
+		case 'info':
+			console.log(`Client info:\nusername: ${variables.bot.name}, channel: ${channel}`);
+			console.log(`Broadcaster info:\nusername: ${variables.broadcaster.name}, channel: ${channel}`);
+			break;
+		default:
+			console.log("Command not found.");
+			break;
 	}
-	if (text.trim() === 'quit') { // Listens for phrase "quit" in console, if issued, ends program.
-		console.log("Command Issued: Quit. Ending program.");
-		client.disconnect();
-		broadcaster.disconnect();
-		process.exit();
-	} else (console.log("Console command not found"));
 });
 
 function onMessageHandler(target, context, msg, self) {
@@ -136,39 +151,50 @@ function onMessageHandler(target, context, msg, self) {
 	}
 	var commandName = msg.trim();
 	
-	switch(commandName.startsWith('!')){
-		case commandName.startsWith('!thanks'):
-			var commandtarget = msg.split(' ')[1];
-			thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
-			break;
-		case commandName.startsWith('!nothanks'):
-			var commandtarget = msg.split(' ')[1];
-			thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
-			break;
-		case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
-			var commandtarget = msg.split(' ')[1];
-			caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
-			break;
-		case commandName.startsWith('!raid'):
-			welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
-			break;
-		case commandName.startsWith('!about'):
-			about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
-			break;
-		case commandName.startsWith('!hug'):
-			var commandtarget = msg.split(' ')[1];
-			affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
-			break;
-		case commandName.startsWith('!ping'):
-			tools.ping(context, client, channel, process, variables);
-			break;
-		case commandName.startsWith('!telegram'):
-			tools.telegram(context, client, channel, variables);
-			break;
-		case commandName.startsWith('!discord'):
-			tools.discord(context, client, channel, variables);
-			break;
-		default:
-			return;
+	if(commandName.startsWith('!')){
+
+		switch(commandName.startsWith('!')){
+			case commandName.startsWith('!thanks'):
+				var commandtarget = msg.split(' ')[1];
+				thanks.thanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action
+				break;
+			case commandName.startsWith('!nothanks'):
+				var commandtarget = msg.split(' ')[1];
+				thanks.nothanks(commandtarget, context, broadcaster, client, variables.broadcaster.name); // Code jumps to thanks module to complete action.
+				break;
+			case commandName.startsWith('!caster') || commandName.startsWith('!shoutout') || commandName.startsWith('!so'):
+				var commandtarget = msg.split(' ')[1];
+				caster.shoutout(commandtarget, context, client, variables.broadcaster.name); // Code jumps to caster module to complete action.
+				break;
+			case commandName.startsWith('!raid'):
+				welcome.welcome(context, client, variables.broadcaster.name) // Code jumps to welcome module to complete action.
+				break;
+			case commandName.startsWith('!about'):
+				about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
+				break;
+			case commandName.startsWith('!hug'):
+				var commandtarget = msg.split(' ')[1];
+				affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
+				break;
+			case commandName.startsWith('!ping'):
+				tools.ping(context, client, channel, process, variables);
+				break;
+			case commandName.startsWith('!telegram'):
+				tools.telegram(context, client, channel, variables);
+				break;
+			case commandName.startsWith('!discord'):
+				tools.discord(context, client, channel, variables);
+				break;
+			default:
+				return;
+		}
+	} else {
+		return;
 	}
 }
+
+/* BUGFIX LIST:
+
+
+
+*/
