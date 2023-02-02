@@ -9,49 +9,44 @@ function loader(file){
 		return require(file);
 		console.log(`${file} loaded.`);
 	} catch (e){
-		console.log(e);
-		//console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
+		//console.log(e);
+		console.log(`${file} couldn't load. Make sure its in the right folder and try again.\nRequired Modules should be in the required_modules folder, other modules should be in the custom_modules folder, and variables.js should be in the root.`);
 		return null;
-	}
-}
+	} }
 
 
 
 // Attempt to load variables. If they can't load, exit process.
 let variables = loader('./variables.js');
 if(variables === null) {
-	process.exit();
-};
+	process.exit(); };
 //Attempt to load about module. If they can't load, exit process.
 let about = loader('./required_modules/about.js');
 if(about === null){
-	process.exit();
-}
+	process.exit(); };
 //Attempt to load subscriptions module. If it cannot load, exit process.
 let subscriptions = loader('./required_modules/subscriptions.js');
 if(subscriptions === null){
-	process.exit();
-};
+	process.exit(); };
 //Attempt to load tools module. If it cannot load, exit process.
 let tools = loader('./required_modules/tools.js');
 if(tools === null){
-	process.exit();
-};
+	process.exit(); };
 
 
-
+// Load Custom Modules
 let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
 let affection = loader('./custom_modules/affection.js');
-console.log(`Affection status:\n${affection}`);
-var test = null;
-console.log(`test is ${test}`);
 
-process.stdin.resume(); //Set up console input
+
+//Set up console input
+process.stdin.resume();
 process.stdin.setEncoding('utf8');
 console.log("Console Input Running");
 
+// CHANGE THIS TO ITS OWN VARIABLE SO THE BROADCASTER ACCOUNT IS NOT NEEDED, possibly change code so this variable isn't needed at all
 var channel = variables.broadcaster.name;
 
 //Define configuration options
@@ -65,8 +60,7 @@ const opts = { //Set bot name and auth
 	},
 	channels: [
 		variables.broadcaster.name
-	]
-};
+	] };
 const opts2 = { //Set secondary bot name and auth using the broadcaster's identification for the ability to create VIPs (completely optional)
 	connection:{
 		reconnect: true
@@ -77,8 +71,7 @@ const opts2 = { //Set secondary bot name and auth using the broadcaster's identi
 	},
 	channels: [
 		variables.broadcaster.name
-	]
-};
+	] };
 
 //Create client using our options
 const client = new tmi.client(opts); //Set up bot for issuing commands under bot name
@@ -89,32 +82,24 @@ client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
 broadcaster.on('connected', onConnectedHandler2);
 client.on('subscription', (channel, username, message, userstate, methods) => {
-	subscriptions.sub(client, username, channel);
-});
+	subscriptions.sub(client, username, channel); });
 client.on('resub', (channel, username, months, message, userstate, methods) => {
-	subscriptions.resub(client, username, months, channel);
-});
+	subscriptions.resub(client, username, months, channel); });
 client.on('subgift', (channel, username, streakMonths, recipient, methods, userstate) => {
-	subscriptions.giftsub(client, username, recipient, channel);
-});
+	subscriptions.giftsub(client, username, recipient, channel); });
 client.on('submysterygift', (channel, username, numbOfSubs, methods, userstate) => {
-	subscriptions.mysteryGift(client, username, numbOfSubs, channel);
-});
+	subscriptions.mysteryGift(client, username, numbOfSubs, channel); });
 client.on('anongiftpaidupgrade', (channel, username, userstate) => {
-	subscriptions.anonContinue(channel, username, channel);
-})
+	subscriptions.anonContinue(channel, username, channel); });
 client.on('giftpaidupgrade', (channel, username, sender, userstate) => {
-	subscriptions.continue(channel, username, sender, channel);
-})
+	subscriptions.continue(channel, username, sender, channel); });
 
 //Run function to log connections
 function onConnectedHandler(addr, port){
 	console.log(`* Connected to ${addr}:${port}`);
-	console.log('* Current channels are: ' + client.getChannels());
-}
+	console.log('* Current channels are: ' + client.getChannels()); };
 function onConnectedHandler2(addr, port) {
-	console.log(`* Connected to ${addr}:${port}`);
-}
+	console.log(`* Connected to ${addr}:${port}`); };
 
 // Connect to Twitch
 client.connect().catch(console.error); // Connect Client to Bot Account, catch errors.
@@ -142,8 +127,7 @@ process.stdin.on('data', function(text) {
 		default:
 			console.log("Command not found.");
 			break;
-	}
-});
+	} });
 
 function onMessageHandler(target, context, msg, self) {
 	if (self) { // Ignore messages from self
@@ -190,8 +174,7 @@ function onMessageHandler(target, context, msg, self) {
 		}
 	} else {
 		return;
-	}
-}
+	} };
 
 /* BUGFIX LIST:
 
