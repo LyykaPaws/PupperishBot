@@ -12,6 +12,6 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
     - name: Checkout repository
-      uses: actions/checkout
+      uses: actions/checkout@v3
     - name: Restore dependencies
       run: npm i tmi.js
