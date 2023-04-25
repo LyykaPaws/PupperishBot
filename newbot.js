@@ -105,6 +105,16 @@ function onConnectedHandler2(addr, port) {
 client.connect().catch(console.error); // Connect Client to Bot Account, catch errors.
 broadcaster.connect().catch(console.error);
 
+process.once('SIGINT', function(){
+	console.log('SIGINT detected.');
+		client.disconnect();
+			console.log("Client disconnected.");
+		broadcaster.disconnect();
+			console.log("Broadcaster disconnected. Exiting gracefully.")
+		process.exit();	
+});
+
+
 process.stdin.on('data', function(text) {
 	//console.log(text);
 	switch(text.trim()){
@@ -112,10 +122,11 @@ process.stdin.on('data', function(text) {
 			console.log("List of commands: \nquit");
 			break;
 		case 'quit':
-			console.log("Ending process.");
 			client.disconnect();
+				console.log("Client disconnected.");
 			broadcaster.disconnect();
-			process.exit();
+				console.log("Broadcaster disconnected. Exiting gracefully.")
+			process.exit();	
 			break;
 		case 'uptime':
 			console.log(`Client Uptime: ${process.uptime()}`);
@@ -123,6 +134,9 @@ process.stdin.on('data', function(text) {
 		case 'info':
 			console.log(`Client info:\nusername: ${variables.bot.name}, channel: ${channel}`);
 			console.log(`Broadcaster info:\nusername: ${variables.broadcaster.name}, channel: ${channel}`);
+			break;
+		case 'ping':
+			console.log('Pong!');
 			break;
 		default:
 			console.log("Command not found.");
