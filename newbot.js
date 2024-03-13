@@ -183,6 +183,9 @@ function onMessageHandler(target, context, msg, self) {
 			case commandName.startsWith('!discord'):
 				tools.discord(context, client, channel, variables);
 				break;
+			case commandName.startsWith('!lurk'):
+				extras.lurk(context, client, channel, variables);
+				break;
 			default:
 				return;
 		}
