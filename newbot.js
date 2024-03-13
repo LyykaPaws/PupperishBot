@@ -39,6 +39,7 @@ let thanks = loader('./custom_modules/thanks.js');
 let caster = loader('./custom_modules/caster.js');
 let welcome = loader('./custom_modules/welcome.js');
 let affection = loader('./custom_modules/affection.js');
+let extras = loader('./custom_modules/extras.js');
 
 
 //Set up console input
@@ -182,6 +183,9 @@ function onMessageHandler(target, context, msg, self) {
 				break;
 			case commandName.startsWith('!discord'):
 				tools.discord(context, client, channel, variables);
+				break;
+			case commandName.startsWith('!lurk'):
+				extras.lurk(client, channel, context);
 				break;
 			default:
 				return;
