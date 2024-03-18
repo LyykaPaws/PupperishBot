@@ -12,5 +12,9 @@ module.exports = {
 	discord: function(context, client, channel, variables){
 		console.log(`${context.username} used !discord.`);
 		client.say(channel, `Feel free to join our discord at ${variables.info.discord}. Its not very active but I do post when I go live and some updates in there regarding stream.`);
+	},
+	throne: function(context, client, channel, variables){
+		console.log(`${context.username} used !throne.`);
+		client.say(channel, `Hey! Did you know Lyyka has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! ${variables.info.throne}`);
 	}
 };
