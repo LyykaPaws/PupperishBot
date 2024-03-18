@@ -115,7 +115,7 @@ process.once('SIGINT', function(){
 		process.exit();	
 });
 
-
+// Console Input Handler
 process.stdin.on('data', function(text) {
 	//console.log(text);
 	switch(text.trim()){
@@ -144,12 +144,22 @@ process.stdin.on('data', function(text) {
 			break;
 	} });
 
+// Timer Events
+
+setInterval(() => {extras.announcement1(client, channel); // Telegram Timed Announcement
+}, 1800000);
+setInterval(() => {extras.announcement2(client, channel); // Throne Timed Announcement
+}, 3600000);
+
+// Command Message Handler
 function onMessageHandler(target, context, msg, self) {
 	if (self) { // Ignore messages from self
 		return;
 	}
 	var commandName = msg.trim();
 	
+	// Commands
+
 	if(commandName.startsWith('!')){
 
 		switch(commandName.startsWith('!')){
@@ -184,8 +194,15 @@ function onMessageHandler(target, context, msg, self) {
 			case commandName.startsWith('!discord'):
 				tools.discord(context, client, channel, variables);
 				break;
+			case commandName.startsWith('!throne'):
+				tools.throne(context, client, channel, variables);
+				break;
 			case commandName.startsWith('!lurk'):
 				extras.lurk(client, channel, context);
+				break;
+			case commandName.startsWith('!commands'):
+				console.log(`!commands sent by ${context.username}`);
+				client.say(channel, 'Possible commands are: !raid, !about, !hug, !telegram, !discord, !throne, and !lurk');
 				break;
 			default:
 				return;
