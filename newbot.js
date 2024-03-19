@@ -139,6 +139,9 @@ process.stdin.on('data', function(text) {
 		case 'ping':
 			console.log('Pong!');
 			break;
+		case 'announcement1':
+			extras.announcement1(client, channel);
+			break;
 		default:
 			console.log("Command not found.");
 			break;
@@ -146,10 +149,16 @@ process.stdin.on('data', function(text) {
 
 // Timer Events
 
-setInterval(() => {extras.announcement1(client, channel); // Telegram Timed Announcement
-}, 1800000);
-setInterval(() => {extras.announcement2(client, channel); // Throne Timed Announcement
-}, 3600000);
+function timedAnnouncements(client, channel){
+	setTimeout(() => {extras.announcement1(client, channel)}, 30 * 60 * 1000);
+	setTimeout(() => {extras.announcement2(client, channel)}, 60 * 60 * 1000);
+
+	//Restart Announcements
+	setTimeout(() => {timedAnnouncements(client, channel);}, 60 * 60 * 1000);
+}
+
+// Start Timed Announcements
+setTimeout (() => {timedAnnouncements(client, channel);}, 0);
 
 // Command Message Handler
 function onMessageHandler(target, context, msg, self) {
