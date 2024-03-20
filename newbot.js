@@ -150,7 +150,10 @@ process.stdin.on('data', function(text) {
 			console.log('Pong!');
 			break;
 		case 'announcement1':
-			extras.announcement1(client, channel);
+			tools.announcement1(client, channel, variables);
+			break;
+		case 'announcement2':
+			tools.announcement2(client, channel, variables);
 			break;
 		default:
 			console.log("Command not found.");
