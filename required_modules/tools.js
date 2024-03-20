@@ -23,7 +23,7 @@ module.exports = {
 	},
 	announcement2: function(client, channel, variables) {
 		console.log('Doing Throne Announcement');
-		client.say(channel, `Hey! Did you know that ${variables.info.name} has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! ${variables.info.throne}`);
+		client.say(channel, `Hey! Did you know that Lyyka has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! https://throne.com/lyykapaws`);
 	}
 	
 };
