@@ -47,7 +47,7 @@ var modules = {
 	telegram: true,
 	throne: true,
 	lurk: true,
-	ping: false,
+	ping: true,
 	hug: true
 };
 
