@@ -15,6 +15,15 @@ module.exports = {
 	},
 	throne: function(context, client, channel, variables){
 		console.log(`${context.username} used !throne.`);
-		client.say(channel, `Hey! Did you know Lyyka has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! ${variables.info.throne}`);
+		client.say(channel, `Hey! Did you know that ${variables.info.name} has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! ${variables.info.throne}`);
+	},
+	announcement1: function(client, channel, variables) {
+		console.log('Doing Telegram Timed Announcement');
+		client.say(channel, `Hey! Did you know we have a telegram group? Feel free to join! We\'re pretty friendly, promise we don\'t bite! ${variables.info.telegram}`);
+	},
+	announcement2: function(client, channel, variables) {
+		console.log('Doing Throne Announcement');
+		client.say(channel, `Hey! Did you know that ${variables.info.name} has a wishlist? Absolutely not required, but if you wanna give the puppo a gift, thats always an option! ${variables.info.throne}`);
 	}
+	
 };

@@ -41,6 +41,16 @@ let welcome = loader('./custom_modules/welcome.js');
 let affection = loader('./custom_modules/affection.js');
 let extras = loader('./custom_modules/extras.js');
 
+//Global Variables
+var modules = {
+	discord: false,
+	telegram: true,
+	throne: true,
+	lurk: true,
+	ping: false,
+	hug: true
+};
+
 
 //Set up console input
 process.stdin.resume();
@@ -149,16 +159,16 @@ process.stdin.on('data', function(text) {
 
 // Timer Events
 
-function timedAnnouncements(client, channel){
-	setTimeout(() => {extras.announcement1(client, channel)}, 30 * 60 * 1000);
-	setTimeout(() => {extras.announcement2(client, channel)}, 60 * 60 * 1000);
+function timedAnnouncements(client, channel, variables){
+	setTimeout(() => {tools.announcement1(client, channel, variables)}, 30 * 60 * 1000);
+	setTimeout(() => {tools.announcement2(client, channel, variables)}, 60 * 60 * 1000);
 
 	//Restart Announcements
-	setTimeout(() => {timedAnnouncements(client, channel);}, 60 * 60 * 1000);
+	setTimeout(() => {timedAnnouncements(client, channel, variables);}, 60 * 60 * 1000);
 }
 
 // Start Timed Announcements
-setTimeout (() => {timedAnnouncements(client, channel);}, 0);
+setTimeout (() => {timedAnnouncements(client, channel, variables);}, 0);
 
 // Command Message Handler
 function onMessageHandler(target, context, msg, self) {
@@ -191,24 +201,17 @@ function onMessageHandler(target, context, msg, self) {
 				about.about(client, variables.broadcaster.name, context); // Code jumps to about module to complete action.
 				break;
 			case commandName.startsWith('!hug'):
-				var commandtarget = msg.split(' ')[1];
-				affection.hug(client, variables.broadcaster.name, context, commandtarget); // Code jumps to affection module to complete action.
-				break;
+				if(modules.hug == true){ var commandtarget = msg.split(' ')[1]; affection.hug(client, variables.broadcaster.name, context, commandtarget); break; } else { break; };
 			case commandName.startsWith('!ping'):
-				tools.ping(context, client, channel, process, variables);
-				break;
+				if(modules.ping == true) { tools.ping(context, client, channel, process, variables); break; } 														else { break; };
 			case commandName.startsWith('!telegram'):
-				tools.telegram(context, client, channel, variables);
-				break;
+				if (modules.telegram == true){ tools.telegram(context, client, channel, variables); break;} 														else { break; };
 			case commandName.startsWith('!discord'):
-				tools.discord(context, client, channel, variables);
-				break;
+				if (modules.discord == true){ tools.discord(context, client, channel, variables); break;}   														else { break;};
 			case commandName.startsWith('!throne'):
-				tools.throne(context, client, channel, variables);
-				break;
+				if(modules.throne == true){ tools.throne(context, client, channel, variables); break;}      														else { break; };
 			case commandName.startsWith('!lurk'):
-				extras.lurk(client, channel, context);
-				break;
+				if(modules.lurk == true){ extras.lurk(client, channel, context); break; }                    														else { break; };
 			case commandName.startsWith('!commands'):
 				console.log(`!commands sent by ${context.username}`);
 				client.say(channel, 'Possible commands are: !raid, !about, !hug, !telegram, !discord, !throne, and !lurk');
